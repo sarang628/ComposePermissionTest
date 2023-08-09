@@ -1,8 +1,8 @@
 https://developer.android.com/training/permissions/requesting
 
-[Basic principles](#Basic principles)
+[Basic principles](#a)
 
-[Explain why your app needs the permission](#Explain why your app needs the permission)
+[Explain why your app needs the permission](#b)
 
 안드로이드는 제한된 샌드박스 안에서 실행
 밖에 있는 자원을 필요로한다면 런타임 권한 수행 할 수 있음
@@ -14,7 +14,7 @@ https://developer.android.com/training/permissions/requesting
 위험한 권한을 사용 시 API 22 이하에서는 권한이 자동으로 부여 됨
 
 
-<a id="Basic principles"></a>
+<a id="a"></a>
 ## [Basic principles](https://developer.android.com/training/permissions/requesting#principles)
 
 앱 사용중 사용자가 그 권한이 필요 할 때 요청하기
@@ -41,7 +41,7 @@ To check whether the user already granted your app a particular permission, pass
 into the ContextCompat.checkSelfPermission() method. This method returns either PERMISSION_GRANTED
 or PERMISSION_DENIED, depending on whether your app has the permission.
 
-<a id="Explain why your app needs the permission"></a>
+<a id="b"></a>
 ## [Explain why your app needs the permission](https://developer.android.com/training/permissions/requesting#workflow_for_requesting_permissions)
 
 requestPermissions() 호출 시 시스템 다이얼로그 발생
