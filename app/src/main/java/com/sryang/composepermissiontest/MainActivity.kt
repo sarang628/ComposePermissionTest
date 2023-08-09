@@ -13,12 +13,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.sryang.composepermissiontest.ui.theme.ComposePermissionTestTheme
+import com.sryang.library.PermissionsUtil
+import com.sryang.library.PermissionsUtil.Companion.RequestPermissionInCompose
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //testRequestPermissions(this)
+
+        PermissionsUtil
 
         when {
             checkSelfPermission(

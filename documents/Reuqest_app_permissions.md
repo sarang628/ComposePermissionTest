@@ -4,6 +4,8 @@ https://developer.android.com/training/permissions/requesting
 > [Basic principles](#a)
 > 
 > [Explain why your app needs the permission](#b)
+> 
+> [Request permissions](#c)
 
 안드로이드는 제한된 샌드박스 안에서 실행
 밖에 있는 자원을 필요로한다면 런타임 권한 수행 할 수 있음
@@ -18,10 +20,10 @@ https://developer.android.com/training/permissions/requesting
 <a id="a"></a>
 ## [Basic principles](https://developer.android.com/training/permissions/requesting#principles)
 
-앱 사용중 사용자가 그 권한이 필요 할 때 요청하기
-권한이 없다고 사용자에 앱사용을 막지 않기
-사용자가 권한 회수 시, 우아하게 퇴보시키기
-같은 시스템 다이얼로그가 나왔다고 권한을 다 가졌다고 가정하지 않기
+앱 사용중 사용자가 그 권한이 필요 할 때 요청하기<br>
+권한이 없다고 사용자에 앱사용을 막지 않기<br>
+사용자가 권한 회수 시, 우아하게 퇴보시키기<br>
+같은 시스템 다이얼로그가 나왔다고 권한을 다 가졌다고 가정하지 않기<br>
 
 ## [Workflow for requesting permissions](https://developer.android.com/training/permissions/requesting#workflow_for_requesting_permissions)
 
@@ -55,7 +57,8 @@ Note: Starting in Android 12 (API level 31) 이상에서는 카메라나 마이�
 ContextCompat.checkSelfPermission() == PERMISSION_DENIED 일 경우 다음 함수 호출
 shouldShowRequestPermissionRationale() == true 일 경우 권한이 필요한 이유 설명하기.
 
-[권한 요청하기](https://developer.android.com/training/permissions/requesting#request-permission)
+<a id="c"></a>
+## [Request permissions](https://developer.android.com/training/permissions/requesting#request-permission)
 
 shouldShowRequestPermissionRationale() 권한에 필요성 전달하기
 
