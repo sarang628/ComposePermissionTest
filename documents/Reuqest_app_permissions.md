@@ -1,8 +1,9 @@
 https://developer.android.com/training/permissions/requesting
 
-[Basic principles](#a)
 
-[Explain why your app needs the permission](#b)
+> [Basic principles](#a)
+> 
+> [Explain why your app needs the permission](#b)
 
 안드로이드는 제한된 샌드박스 안에서 실행
 밖에 있는 자원을 필요로한다면 런타임 권한 수행 할 수 있음
