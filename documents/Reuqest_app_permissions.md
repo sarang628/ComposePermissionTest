@@ -26,5 +26,55 @@ https://developer.android.com/training/permissions/requesting
 7. 사용자의 응답 체크하기
 8. 사용자가 권한을 허가했다면, 자원 접근 가능
 
+## Determine whether your app was already granted the permission
+To check whether the user already granted your app a particular permission, pass that permission into the ContextCompat.checkSelfPermission() method. This method returns either PERMISSION_GRANTED or PERMISSION_DENIED, depending on whether your app has the permission.
 
-6. 런타임 권한 요청하기
+## Explain why your app needs the permission
+The permissions dialog shown by the system when you call requestPermissions() says what permission your app wants, but doesn't say why. In some cases, the user might find that puzzling. It's a good idea to explain to the user why your app wants the permissions before you call requestPermissions().
+
+Research shows that users are much more comfortable with permissions requests if they know why the app needs them, such as whether the permission is needed to support a core feature of the app or for advertising. As a result, if you're only using a fraction of the API calls that fall under a permission group, it helps to explicitly list which of those permissions you're using and why. For example, if you're only using coarse location, let the user know this in your app description or in help articles about your app.
+
+Under certain conditions, it's also helpful to let users know about sensitive data access in real time. For example, if you’re accessing the camera or microphone, it’s a good idea to let the user know by using a notification icon somewhere in your app, or in the notification tray (if the application is running in the background), so it doesn't seem like you're collecting data surreptitiously.
+```
+Note: Starting in Android 12 (API level 31), privacy indicators notify the user whenever applications access the microphone or camera.
+```
+
+Ultimately, if you need to request a permission to make something in your app work, but the reason isn't clear to the user, find a way to let the user know why you need the most sensitive permissions.
+
+If the ContextCompat.checkSelfPermission() method returns PERMISSION_DENIED, call shouldShowRequestPermissionRationale(). If this method returns true, show an educational UI to the user. In this UI, describe why the feature that the user wants to enable needs a particular permission.
+
+Additionally, if your app requests a permission related to location, microphone, or camera, consider explaining why your app needs access to this information.
+
+
+
+[권한 요청하기](https://developer.android.com/training/permissions/requesting#request-permission)
+
+shouldShowRequestPermissionRationale() 권한에 필요성 전달하기
+
+RequestPermission contract 사용(androidX 라이브러리 사용 필요.)
+편리하고 콜백 로직도 포함시킬 수 있음.
+
+아래 라이브러리를 포함시켜야 사용 할 수 있음.
+```
+androidx.activity, version 1.2.0 or later
+androidx.fragment, version 1.3.0 or later
+```
+하나의 권한의 경우 RequestPermission 사용하기
+여러개 권한의 경우 RequestMultiplePermissions 사용하기
+
+액티비티 프레그먼트 안에서 사용하기
+registerForActivityResult() 사용하기 사용자 콜백 응답받기
+ActivityResultLauncher 사용하기. launch() 호출 시 이전 스텝 저장
+launch() 호출 후 권한 다이얼로그 발생.
+다이얼로그를 커스텀 할 수 없음.
+
+[예제코드](../app/src/main/java/com/sryang/composepermissiontest/RequestPermissions.kt)
+```
+val requestPermissionLauncher =
+    registerForActivityResult(RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+        } else {
+        }
+    }
+```
