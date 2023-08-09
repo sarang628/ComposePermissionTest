@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 
-fun requestPermissions(activity: ComponentActivity) {
+fun testRequestPermissions(activity: ComponentActivity) {
     // 사용자 응답에 따른 콜백 동작 작성하기.
     // 시스템 다이얼로그 리턴값 저장하기.
     //  val 또는 lateinit var로 저장하기
