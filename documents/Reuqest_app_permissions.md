@@ -1,6 +1,7 @@
 https://developer.android.com/training/permissions/requesting
 
 [Basic principles](#Basic principles)
+
 [Explain why your app needs the permission](#Explain why your app needs the permission)
 
 안드로이드는 제한된 샌드박스 안에서 실행
