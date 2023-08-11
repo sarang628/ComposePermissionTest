@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace 'com.sryang.library'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 24
-        targetSdk 33
+        targetSdk 34
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -50,4 +50,8 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+
+    //0.29.1-alpha
+    //0.33.0-alpha
+    implementation "com.google.accompanist:accompanist-permissions:0.29.1-alpha"
 }

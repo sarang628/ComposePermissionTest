@@ -15,36 +15,15 @@ import androidx.compose.ui.Modifier
 import com.sryang.composepermissiontest.ui.theme.ComposePermissionTestTheme
 import com.sryang.library.PermissionsUtil
 import com.sryang.library.PermissionsUtil.Companion.RequestPermissionInCompose
+import com.sryang.library.compose.Sample
+
+//import com.sryang.library.compose.Sample
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //testRequestPermissions(this)
-
-        PermissionsUtil
-
-        when {
-            checkSelfPermission(
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                // You can use the API that requires the permission.
-                AlertDialog.Builder(this@MainActivity)
-                    .setMessage("PERMISSION_GRANTED")
-                    .show()
-            }
-            shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                AlertDialog.Builder(this@MainActivity)
-                    .setMessage("shouldShowRequestPermissionRationale")
-                    .show()
-            }
-            else -> {
-                AlertDialog.Builder(this@MainActivity)
-                    .setMessage("PERMISSION_Denied")
-                    .show()
-                //testRequestPermissions(this)
-            }
-        }
+        PermissionsUtil.requestPermission(Manifest.permission.CAMERA, this)
 
         setContent {
             ComposePermissionTestTheme {
@@ -54,8 +33,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                        PermissionTest()
+                        PermissionsUtil.RequestPermissionInCompose(Manifest.permission.CAMERA)
                     }
+
+                    Sample()
                 }
             }
         }
@@ -64,5 +45,5 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun PermissionTest() {
-    RequestPermissionInCompose()
+
 }

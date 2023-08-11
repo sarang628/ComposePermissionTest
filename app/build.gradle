@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.sryang.composepermissiontest'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.sryang.composepermissiontest"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -35,9 +35,6 @@ android {
     }
     buildFeatures {
         compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.3.2'
     }
     packagingOptions {
         resources {
