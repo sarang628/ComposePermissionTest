@@ -1,32 +1,14 @@
-https://developer.android.com/guide/topics/permissions/overview
+https://developer.android.com/training/permissions/declaring
 
-앱 권한
-제한된 데이터
-제한된 동작
+앱 권한을 사용하려면 manifest 파일에 선언해야 함.
+manifest에 선언함으로써 플레이스토어나 사용자의 이해를 도울 수 있음
 
-이장의 개요
-안드로이드 권한 작업
-고수준 작업 방향
-모범 예제
+인스톨 시 권한
+런타임 권한
+특별 권한
 
-다른장에서는
-앱 권한 최소화
-권한 선언
-런타임 권한 요청
-다른앱과의 상호작용 제한
+## [Add declaration to app manifest](https://developer.android.com/training/permissions/declaring#add-to-manifest)
 
-작업방향
-권한 요청없이 수행하는 방법
-권한 요청하여 수행하는 방법
 
-권한 종류
-설치 시 권한요청
-일반 권한요청
-사인 권한 요청
-
-런타임 권한 요청
-위험한 방법 권한요청
-
-특별 권한 요청
 
 

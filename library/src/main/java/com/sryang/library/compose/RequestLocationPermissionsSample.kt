@@ -16,9 +16,6 @@
 
 package com.sryang.library.compose
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -30,28 +27,10 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
-//import com.google.accompanist.permissions.ExperimentalPermissionsApi
-//import com.google.accompanist.permissions.rememberMultiplePermissionsState
-
-class RequestLocationPermissionsSample : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-            Sample()
-        }
-    }
-}
-
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-public fun Sample() {
-    val locationPermissionsState = rememberMultiplePermissionsState(
-        listOf(
-            android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-        )
-    )
+fun RequestLocationPermissionsSample(permissions: List<String>) {
+    val locationPermissionsState = rememberMultiplePermissionsState(permissions)
 
     if (locationPermissionsState.allPermissionsGranted) {
         Text("Thanks! I can access your exact location :D")

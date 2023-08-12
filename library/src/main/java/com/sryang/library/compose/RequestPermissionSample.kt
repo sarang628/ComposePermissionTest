@@ -9,7 +9,7 @@ class RequestPermissionSample : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            Sample()
+            //Sample()
         }
     }
 }

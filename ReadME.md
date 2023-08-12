@@ -1,10 +1,10 @@
-## [About permission](./documents/Declare_app_permissions.md)
+## [About permission](./documents/About_permissions.md)
 
 ## [Declare app permissions](./documents/Declare_app_permissions.md)
 
 ## [Request app permissions](./documents/Reuqest_app_permissions.md)
 
-## [Jetpack Compose Permissions](./documents/Jetpack_Compose_Permissions)
+## [Jetpack Compose Permissions](./documents/Jetpack_Compose_Permissions.md)
 
 
 ##
