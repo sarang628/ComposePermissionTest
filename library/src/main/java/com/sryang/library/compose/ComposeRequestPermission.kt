@@ -1,8 +1,10 @@
 package com.sryang.library.compose
 
+import android.Manifest
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 
@@ -19,4 +21,10 @@ fun ComposeRequestPermission(permission: String) {
 
         }
     }
+}
+
+@Preview
+@Composable
+fun test() {
+    ComposeRequestPermission(permission = Manifest.permission.ACCESS_FINE_LOCATION)
 }

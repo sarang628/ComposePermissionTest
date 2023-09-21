@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.sryang.composepermissiontest.ui.theme.ComposePermissionTestTheme
+import com.sryang.library.compose.BastPracticePermission
 import com.sryang.library.compose.ComposeRequestPermission
 import com.sryang.library.compose.RequestLocationPermissionsSample
 
@@ -28,14 +29,14 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                        //RequestPermissionInCompose(Manifest.permission.CAMERA)
-                        RequestLocationPermissionsSample(
+                        //ComposeRequestPermission(Manifest.permission.CAMERA)
+                        /*RequestLocationPermissionsSample(
                             listOf(
                                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
                                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                             )
-                        )
-                        //ComposeRequestPermission(permission = Manifest.permission.ACCESS_FINE_LOCATION )
+                        )*/
+                        BastPracticePermission()
                     }
 
                 }
