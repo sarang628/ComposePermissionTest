@@ -22,9 +22,8 @@ import com.google.accompanist.permissions.rememberPermissionState
 @Composable
 fun BastPracticePermission() {
     val context = LocalContext.current
-    val isGranged = checkLocationPermission(context = context)
+    val isGranted = checkLocationPermission(context = context)
     var isExplain by remember { mutableStateOf(false) }
-    var showExplainDialog by remember { mutableStateOf(false) }
 
     // 3.Request permissions
     val request = rememberPermissionState(
@@ -35,9 +34,9 @@ fun BastPracticePermission() {
 
     Column {
         // 1.Determine whether your app was already granted the permission
-        if (isGranged == PackageManager.PERMISSION_GRANTED)
+        if (isGranted == PackageManager.PERMISSION_GRANTED)
             Text(text = "ACCESS_FINE_LOCATION is PERMISSION_GRANTED")
-        else if (isGranged == PackageManager.PERMISSION_DENIED)
+        else if (isGranted == PackageManager.PERMISSION_DENIED)
             Text(text = "ACCESS_FINE_LOCATION is PERMISSION_DENIED")
 
         // 1.Determine whether your app was already granted the permission (compose)
