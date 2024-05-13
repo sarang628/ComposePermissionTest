@@ -36,7 +36,10 @@ class MainActivity : ComponentActivity() {
                                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                             )
                         )*/
-                        BastPracticePermission()
+                        BastPracticePermission(
+                            permission = Manifest.permission.CALL_PHONE,
+                            permissionMessage = "전화 권힌 필요."
+                        )
                     }
 
                 }

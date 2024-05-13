@@ -1,6 +1,5 @@
 package com.sryang.library.compose
 
-import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
@@ -18,16 +17,16 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 
 @OptIn(ExperimentalPermissionsApi::class)
-@Preview
 @Composable
-fun BastPracticePermission() {
+fun BastPracticePermission(permission: String,
+                           permissionMessage : String) {
     val context = LocalContext.current
-    val isGranted = checkLocationPermission(context = context)
+    val isGranted = checkPermission(context = context, permission = permission)
     var isExplain by remember { mutableStateOf(false) }
 
     // 3.Request permissions
     val request = rememberPermissionState(
-        permission = Manifest.permission.ACCESS_FINE_LOCATION,
+        permission = permission,
         onPermissionResult = {
 
         })
@@ -49,7 +48,7 @@ fun BastPracticePermission() {
 
                 AlertDialog
                     .Builder(context)
-                    .setMessage("어떤 이유로 민감한 정보에 접근합니다.")
+                    .setMessage(permissionMessage)
                     .setPositiveButton("확인") { _, _ -> }
                     .show()
             } else {
@@ -68,7 +67,7 @@ fun BastPracticePermission() {
  * [android.content.pm.PackageManager.PERMISSION_DENIED],
  * [android.content.pm.PackageManager.PERMISSION_GRANTED]
  */
-fun checkLocationPermission(context: Context): Int {
+fun checkPermission(context: Context, permission: String): Int {
 
-    return context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    return context.checkSelfPermission(permission)
 }
