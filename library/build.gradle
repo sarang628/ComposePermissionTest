@@ -51,7 +51,12 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1")
+
+
     //0.29.1-alpha
     //0.33.0-alpha
+    //0.37.3
     implementation "com.google.accompanist:accompanist-permissions:0.29.1-alpha"
 }

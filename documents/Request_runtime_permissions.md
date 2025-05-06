@@ -1,29 +1,24 @@
-https://developer.android.com/training/permissions/requesting
+https://developer.android.com/training/permissions/requesting#workflow_for_requesting_permissions
 
+- 모든 안드로이드 앱은 접근이 제한된 샌드박스에서 실행된다. 샌드박스 밖의 자원을 필요로 한다면, 권한을 선언하고 권한 요청을 설정 할 수 있다.
+- note: 특정(민감한) 권한은 요청 할 수 있는 방법이 다를 수 있음.
+- dangerous permissions 라는 종류의 권한들도 안드로이드 6.0 이상에서 권한을 요청하는 절차가 따로 있음
+- 위험하지 않은 권한이나, 안드로이드 5.1 버전 이하 에서는 앱 실행 시 권한이 자동으로 승인된다.
 
 > [Basic principles](#a)
-> 
+>
 > [Explain why your app needs the permission](#b)
-> 
+>
 > [Request permissions](#c)
 
-안드로이드는 제한된 샌드박스 안에서 실행
-밖에 있는 자원을 필요로한다면 런타임 권한 수행 할 수 있음
-이장은 작업 흐름에 대한 설명
-
-민감한 정보는 특별권한을 통해 권한 요청 다른 방법 학습 필요
-
-위험한 권한을 사용 시 API 23 이상에서는 이 장의 가이드를 따름
-위험한 권한을 사용 시 API 22 이하에서는 권한이 자동으로 부여 됨
-
-
-<a id="a"></a>
 ## [Basic principles](https://developer.android.com/training/permissions/requesting#principles)
 
-앱 사용중 사용자가 그 권한이 필요 할 때 요청하기<br>
-권한이 없다고 사용자에 앱사용을 막지 않기<br>
+런타임에서 권한 요청 시 기본 원칙
+
+앱 사용중 사용자에게 해당 권한을 필요 할 때 요청하기<br>
+권한이 없다고 사용자에 앱 사용을 막지 않기<br>
 사용자가 권한 회수 시, 우아하게 퇴보시키기<br>
-같은 시스템 다이얼로그가 나왔다고 권한을 다 가졌다고 가정하지 않기<br>
+Don't assume any system behavior. For example, don't assume that permissions appear in the same permission group. A permission group merely helps the system minimize the number of system dialogs that are presented to the user when an app requests closely related permissions.
 
 ## [Workflow for requesting permissions](https://developer.android.com/training/permissions/requesting#workflow_for_requesting_permissions)
 
@@ -38,11 +33,11 @@ https://developer.android.com/training/permissions/requesting
 7. 사용자의 응답 체크하기
 8. 사용자가 권한을 허가했다면, 자원 접근 가능
 
-## Determine whether your app was already granted the permission
+<a id="a"></a>
+## [이미 권한이 부여된 상태인지 확인하기](https://developer.android.com/training/permissions/requesting#already-granted)
 
-To check whether the user already granted your app a particular permission, pass that permission
-into the ContextCompat.checkSelfPermission() method. This method returns either PERMISSION_GRANTED
-or PERMISSION_DENIED, depending on whether your app has the permission.
+이미 권한이 부여되었는지 확인 방법. ContextCompat.checkSelfPermission() 함수에서 해당 권한의 상태(PERMISSION_GRANTED
+or PERMISSION_DENIED)를 알 수 있다.
 
 <a id="b"></a>
 ## [Explain why your app needs the permission](https://developer.android.com/training/permissions/requesting#workflow_for_requesting_permissions)
