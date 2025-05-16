@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.sryang.library.compose
+package com.sryang.library.sample
 
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,8 +41,8 @@ class RequestMultiplePermissionsSample : ComponentActivity() {
         setContent {
             val multiplePermissionsState = rememberMultiplePermissionsState(
                 listOf(
-                    android.Manifest.permission.RECORD_AUDIO,
-                    android.Manifest.permission.CAMERA,
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.CAMERA,
                 )
             )
             Sample(multiplePermissionsState)

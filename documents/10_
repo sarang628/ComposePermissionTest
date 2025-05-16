@@ -1,0 +1,26 @@
+권한을 필요로 하는 화면에 추가하기
+
+```
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun WorkFlowImplEmpty(
+    viewModel: BestPracticeViewModel = BestPracticeViewModel(),
+    permission : String = Manifest.permission.ACCESS_FINE_LOCATION
+) {
+    val requestPermission = rememberPermissionState(permission, { viewModel.permissionResult(it) })
+    val state = viewModel.state
+    var stateTxt by remember { mutableStateOf("RequestPermission") }
+
+    when (state) {
+        Idle                    /* 최초 */ -> { viewModel.checkGranted(requestPermission.status.isGranted) }
+        RecognizeToUser         /* UX에 권한을 필요로 하는 정보 인지 시키기 */-> {  }
+        UserDeinedFromRecognize /* 다이얼로그에서 사용자 거절 */ -> {  }
+        CheckAlreadyGranted     /* 권한 요청 전 권한 이미 있는지 확인 */-> {  }
+        DeniedPermission        /* 권한 거부 */-> {  }
+        GrantedPermission       /* 사용자가 권한을 허가했다면, 자원 접근 가능 */-> {  }
+        RequestPermission       /* 런타임 권한 요청하기 */ -> {  }
+        SuggestSystemSetting    /* 권한 거부 상태에서 요청 시 */ -> {  }
+        ShowRationale           /* rationale을 표시 */ -> {  }
+    }
+}
+```

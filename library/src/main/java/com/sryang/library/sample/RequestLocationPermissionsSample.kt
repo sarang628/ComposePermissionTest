@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sryang.library.compose
+package com.sryang.library.sample
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
