@@ -1,30 +1,40 @@
-# 권한 요청 연습
+권한을 필요로 하는 화면에 추가하기
 
-권한을 편하게 요청할 수 있는 라이브러리를 만들고 싶었는데, 권한 요청에 대한 절차가 복잡하여 라이브러리를 쉽게 만들수가 없다.
-절차 별로 구현하는 가이드를 제공하는 연습부터 해야할 것 같다.
+```
+dependencies {
+    implementation 'com.github.sarang628:ComposePermissionTest:be2b9647fc'
+}
+```
 
-## 권한 학습하기
-1. [Permissions on Android](./documents/1_Permissions_on_Android)
-2. [Declare app permissions](./documents/2_Declare_app_permissions)
-3. [Request runtime permissions](./documents/3_Request_runtime_permissions)
-
-
-[ButtonPermission](./documents/1_Permissions_on_Android)
-
-
-권한을 여러개를 한꺼번에 요청하는 방법이 있는데 공식 페이지에서는 예제를 찾기가 어려웠다. 권한을 요청할 때 각 권한마다 (동일한 기능을 사용하기 위할지라도)
-왜 필요한지를 설명하고 권한을 요청해야 한다고 이해.
-
-## 현재 권한이 있는지 여부 확인 방법
-[CheckPermission.kt](./library/src/main/java/com/sryang/library/CheckPermission.kt)
+최초 권한을 체크.
+권한이 허용된 상태라면 GrantedPermission 상태로 변경 됨. 권한 데이터 접근 가능.
+그렇지 않으면 DeniedPermission 상태. 최초진입 시 , 1회 거부 시, 권한 회수시에도 이 상태이므로 UI 구성을 3가지 상태를 하나로 나타내면 됨.
 
 
+```
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun WorkFlowImplEmpty(
+    viewModel: BestPracticeViewModel = BestPracticeViewModel(),
+    permission : String = Manifest.permission.ACCESS_FINE_LOCATION
+) {
+    val requestPermission = rememberPermissionState(permission, { viewModel.permissionResult(it) })
+    val state = viewModel.state
+    var stateTxt by remember { mutableStateOf("RequestPermission") }
 
-# 권한 요청, 위치 요청 Util 모듈
+    when (state) {
+        Idle                    /* 최초 */ -> { viewModel.checkGranted(requestPermission.status.isGranted) }
+        RecognizeToUser         /* UX에 권한을 필요로 하는 정보 인지 시키기 */-> { /* 다이얼로그 버튼 클릭 이벤트에 viewModel.yes()  viewModel.no() 넣기*/ }
+        UserDeinedFromRecognize /* 다이얼로그에서 사용자 거절 */ -> {  }
+        CheckAlreadyGranted     /* 권한 요청 전 권한 이미 있는지 확인 */-> { viewModel.alreadyGranted(requestPermission.status) }
+        DeniedPermission        /* 권한 거부 */-> {  }
+        GrantedPermission       /* 사용자가 권한을 허가했다면, 자원 접근 가능 */-> {  }
+        RequestPermission       /* 런타임 권한 요청하기 */ -> { LaunchedEffect(state == RequestPermission) { requestPermission.launchPermissionRequest() } }
+        SuggestSystemSetting    /* 권한 거부 상태에서 요청 시 */ -> {  }
+        ShowRationale           /* rationale을 표시 */ -> {  }
+    }
 
-rememberMultiplePermissionsState 권한을 요청하고, 허용여부를 알 수 있는 기능 제공
-
-
-## 1. 권한이 있는지 파악하기
-
-## 2. 최초 요청 전 설명하기
+    // 권한 요청시 호출
+    // viewModel.request(requestPermission.status.shouldShowRationale)
+}
+```
