@@ -90,7 +90,10 @@ class BestPracticeViewModel : ViewModel() {
 
 
     fun request(showRationale: Boolean) {
-        if (state == Idle || state == UserDeinedFromRecognize) state = RecognizeToUser
+        if (state == GrantedPermission) {
+
+        }
+        else if (state == Idle || state == UserDeinedFromRecognize) state = RecognizeToUser
         else if (state == DeniedPermission && showRationale) state = RecognizeToUser
         else state = SuggestSystemSetting
     }

@@ -37,3 +37,19 @@ fun WorkFlowImplEmpty(
     // viewModel.request(requestPermission.status.shouldShowRationale)
 }
 ```
+
+## 1. 최초
+```
+Idle /* 1. 최초 */ -> { viewModel.checkGranted(requestPermission.status.isGranted) }
+```
+권한 유무를 체크하여 5.DeniedPermission 또는 6.GrantedPermission 으로 상태를 변경
+
+## 권한 요청하기
+```
+viewModel.request(requestPermission.status.shouldShowRationale)
+```
+위와 같이 호출하면 7.RequestPermission 상태로 변경 된다.
+
+## 2. UX에 권한을 필요로 하는 정보 인지 시키기
+
+Alertdialog가 일반적으로 정보를 보여주기 좋은 것 같다.
