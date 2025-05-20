@@ -2,6 +2,7 @@ package com.sryang.composepermissiontest
 
 import android.Manifest
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,7 +42,8 @@ fun WorkFlowImpl(
     viewModel: BestPracticeViewModel = BestPracticeViewModel(),
     permission : String = Manifest.permission.ACCESS_FINE_LOCATION
 ) {
-    val requestPermission = rememberPermissionState(permission, { viewModel.permissionResult(it) })
+    var timeDiff : Long by remember { mutableStateOf(0L) }
+    val requestPermission = rememberPermissionState(permission, { viewModel.permissionResult(it, System.currentTimeMillis() - timeDiff); })
     val state = viewModel.state
     var stateTxt by remember { mutableStateOf("RequestPermission") }
 
@@ -52,12 +54,13 @@ fun WorkFlowImpl(
         CheckAlreadyGranted     /* 권한 요청 전 권한 이미 있는지 확인 */-> { viewModel.alreadyGranted(requestPermission.status) }
         DeniedPermission        /* 권한 거부 */-> { stateTxt = "권한을 거부함." }
         GrantedPermission       /* 사용자가 권한을 허가했다면, 자원 접근 가능 */-> { stateTxt = "권한을 허용함." }
-        RequestPermission       /* 런타임 권한 요청하기 */ -> { LaunchedEffect(state == RequestPermission) { requestPermission.launchPermissionRequest() } }
+        RequestPermission       /* 런타임 권한 요청하기 */ -> { LaunchedEffect(state == RequestPermission) { requestPermission.launchPermissionRequest(); timeDiff = System.currentTimeMillis() } }
         SuggestSystemSetting    /* 권한 거부 상태에서 요청 시 */ -> { MoveSystemSettingDialog { viewModel.denied() } }
         ShowRationale           /* rationale을 표시 */ -> { RationaleDialog({ viewModel.yesRational() }, {viewModel.no()}) }
     }
 
-    Box {
+    Column {
+        Text(state.toString().split("$")[1].split("@")[0])
         MyLocation(hasPermission = requestPermission.status.isGranted, 0, onRequestPermission = {
             viewModel.request(requestPermission.status.shouldShowRationale)
         })

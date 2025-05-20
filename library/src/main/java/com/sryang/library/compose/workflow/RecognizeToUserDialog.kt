@@ -4,6 +4,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -16,11 +17,11 @@ fun DescribePermissionDialog(
     onDismiss: () -> Unit = {}
 ) {
     AlertDialog(onDismiss, confirmButton = {
-        Button(onYes) {
+        TextButton(onYes) {
             Text("Yes")
         }
     }, dismissButton = {
-        Button(onNo) {
+        TextButton(onNo) {
             Text("No")
         }
     }, text = { Text("권한이 필요합니다.") })

@@ -42,16 +42,16 @@ class BestPracticeViewModel : ViewModel() {
         state = DeniedPermission
     }
 
-    fun permissionResult(bool: Boolean) {
-        state = if (!bool) DeniedPermission else GrantedPermission
+    fun permissionResult(bool: Boolean, timeDiff: Long = 1000L) {
+        state = if (bool) GrantedPermission else {
+            if (timeDiff > 1000) DeniedPermission else SuggestSystemSetting
+        }
     }
 
     fun checkGranted(isGranted: Boolean) {
-        if (isGranted) {
-            viewModelScope.launch {
-                delay(1)
-                state = GrantedPermission
-            }
+        viewModelScope.launch {
+            delay(1)
+            state = if (isGranted) GrantedPermission else DeniedPermission
         }
     }
 
@@ -90,11 +90,10 @@ class BestPracticeViewModel : ViewModel() {
 
 
     fun request(showRationale: Boolean) {
-        if (state == GrantedPermission) {
+        if (state != GrantedPermission) {
+            state = RecognizeToUser
+        }
 
-        } else if (state == Idle || state == UserDeinedFromRecognize) state = RecognizeToUser
-        else if (state == DeniedPermission && showRationale) state = RecognizeToUser
-        else state = SuggestSystemSetting
     }
 
     fun onMoveInSystemDialog() {
