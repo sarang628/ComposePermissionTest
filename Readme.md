@@ -52,4 +52,4 @@ viewModel.request(requestPermission.status.shouldShowRationale)
 
 ## 2. UX에 권한을 필요로 하는 정보 인지 시키기
 
-Alertdialog가 일반적으로 정보를 보여주기 좋은 것 같다.
+Alertdialog로 정보를 보여주기 좋은 것 같다.
