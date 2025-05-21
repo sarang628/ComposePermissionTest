@@ -1,7 +1,6 @@
 package com.sryang.composepermissiontest
 
 import android.Manifest
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -25,15 +24,14 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.sryang.library.compose.workflow.BestPracticeViewModel
 import com.sryang.library.compose.workflow.DescribePermissionDialog
 import com.sryang.library.compose.workflow.MoveSystemSettingDialog
-import com.sryang.library.compose.workflow.PermissonWorkFlow.CheckAlreadyGranted
+import com.sryang.library.compose.workflow.PermissonWorkFlow.CheckRational
 import com.sryang.library.compose.workflow.PermissonWorkFlow.DeniedPermission
 import com.sryang.library.compose.workflow.PermissonWorkFlow.GrantedPermission
-import com.sryang.library.compose.workflow.PermissonWorkFlow.Idle
+import com.sryang.library.compose.workflow.PermissonWorkFlow.InitialPermissionCheck
 import com.sryang.library.compose.workflow.PermissonWorkFlow.RecognizeToUser
 import com.sryang.library.compose.workflow.PermissonWorkFlow.RequestPermission
 import com.sryang.library.compose.workflow.PermissonWorkFlow.ShowRationale
 import com.sryang.library.compose.workflow.PermissonWorkFlow.SuggestSystemSetting
-import com.sryang.library.compose.workflow.PermissonWorkFlow.UserDeinedFromRecognize
 import com.sryang.library.compose.workflow.RationaleDialog
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
@@ -42,27 +40,26 @@ fun WorkFlowImpl(
     viewModel: BestPracticeViewModel = BestPracticeViewModel(),
     permission : String = Manifest.permission.ACCESS_FINE_LOCATION
 ) {
-    var timeDiff : Long by remember { mutableStateOf(0L) }
+    var timeDiff : Long by remember { mutableStateOf(0L) } // 영구 권한 거부 상태 체크를 위한 시간
     val requestPermission = rememberPermissionState(permission, { viewModel.permissionResult(it, System.currentTimeMillis() - timeDiff); })
     val state = viewModel.state
     var stateTxt by remember { mutableStateOf("RequestPermission") }
 
     when (state) {
-        Idle                    /* 최초 */ -> { viewModel.checkGranted(requestPermission.status.isGranted) }
-        RecognizeToUser         /* UX에 권한을 필요로 하는 정보 인지 시키기 */-> { DescribePermissionDialog(onYes = { viewModel.yes() }, onNo = { viewModel.no() }) }
-        UserDeinedFromRecognize /* 다이얼로그에서 사용자 거절 */ -> { stateTxt = "권한을 요청을 원하지 않음." }
-        CheckAlreadyGranted     /* 권한 요청 전 권한 이미 있는지 확인 */-> { viewModel.alreadyGranted(requestPermission.status) }
+        InitialPermissionCheck  /* 최초 권한 체크 */ -> { viewModel.initialPermissionCheck(requestPermission.status.isGranted) }
+        RecognizeToUser         /* UX에 권한을 필요로 하는 정보 인지 시키기 */-> { DescribePermissionDialog(onYes = { viewModel.yesInRecognizeUser() }, onNo = { viewModel.noInRecognizeUser() }) }
+        CheckRational           /* rational 여부 확인 */-> { viewModel.checkRational(requestPermission.status.shouldShowRationale) }
         DeniedPermission        /* 권한 거부 */-> { stateTxt = "권한을 거부함." }
         GrantedPermission       /* 사용자가 권한을 허가했다면, 자원 접근 가능 */-> { stateTxt = "권한을 허용함." }
         RequestPermission       /* 런타임 권한 요청하기 */ -> { LaunchedEffect(state == RequestPermission) { requestPermission.launchPermissionRequest(); timeDiff = System.currentTimeMillis() } }
-        SuggestSystemSetting    /* 권한 거부 상태에서 요청 시 */ -> { MoveSystemSettingDialog { viewModel.denied() } }
-        ShowRationale           /* rationale을 표시 */ -> { RationaleDialog({ viewModel.yesRational() }, {viewModel.no()}) }
+        SuggestSystemSetting    /* 권한 거부 상태에서 요청 시 */ -> { MoveSystemSettingDialog(onMove = { viewModel.onMoveInSystemDialog() }, onDeny = {viewModel.noInSystemDialog()}) }
+        ShowRationale           /* rationale을 표시 */ -> { RationaleDialog({ viewModel.yesRationale() }, {viewModel.noRationale()}) }
     }
 
     Column {
         Text(state.toString().split("$")[1].split("@")[0])
         MyLocation(hasPermission = requestPermission.status.isGranted, 0, onRequestPermission = {
-            viewModel.request(requestPermission.status.shouldShowRationale)
+            viewModel.request()
         })
     }
 }
@@ -78,10 +75,9 @@ fun WorkFlowImplEmpty(
     var stateTxt by remember { mutableStateOf("RequestPermission") }
 
     when (state) {
-        Idle                    /* 1. 최초 */ -> { viewModel.checkGranted(requestPermission.status.isGranted) }
+        InitialPermissionCheck  /* 1. 최초 */ -> { viewModel.initialPermissionCheck(requestPermission.status.isGranted) }
         RecognizeToUser         /* 2. UX에 권한을 필요로 하는 정보 인지 시키기 */-> { /* 다이얼로그 버튼 클릭 이벤트에 viewModel.yes()  viewModel.no() 넣기*/ }
-        UserDeinedFromRecognize /* 3. 다이얼로그에서 사용자 거절 */ -> {  }
-        CheckAlreadyGranted     /* 4. 권한 요청 전 권한 이미 있는지 확인 */-> { viewModel.alreadyGranted(requestPermission.status) }
+        CheckRational           /* 4. 권한 요청 전 권한 이미 있는지 확인 */-> { viewModel.checkRational(requestPermission.status) }
         DeniedPermission        /* 5. 권한 거부 */-> {  }
         GrantedPermission       /* 6. 사용자가 권한을 허가했다면, 자원 접근 가능 */-> {  }
         RequestPermission       /* 7. 런타임 권한 요청하기 */ -> { LaunchedEffect(state == RequestPermission) { requestPermission.launchPermissionRequest() } }

@@ -12,10 +12,9 @@ package com.sryang.library.compose.workflow
  * 8. 사용자가 권한을 허가했다면, 자원 접근 가능
  */
 sealed interface PermissonWorkFlow {
-    object Idle : PermissonWorkFlow
+    object InitialPermissionCheck : PermissonWorkFlow
     object RecognizeToUser : PermissonWorkFlow
-    object UserDeinedFromRecognize : PermissonWorkFlow
-    object CheckAlreadyGranted : PermissonWorkFlow
+    object CheckRational : PermissonWorkFlow
     object ShowRationale : PermissonWorkFlow
     object RequestPermission : PermissonWorkFlow
     object GrantedPermission : PermissonWorkFlow
