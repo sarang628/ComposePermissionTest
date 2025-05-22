@@ -8,6 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,8 +16,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -24,7 +28,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.sryang.library.compose.workflow.BestPracticeViewModel
 import com.sryang.library.compose.workflow.DescribePermissionDialog
 import com.sryang.library.compose.workflow.MoveSystemSettingDialog
-import com.sryang.library.compose.workflow.PermissonWorkFlow.CheckRational
+import com.sryang.library.compose.workflow.PermissonWorkFlow.CheckRationale
 import com.sryang.library.compose.workflow.PermissonWorkFlow.DeniedPermission
 import com.sryang.library.compose.workflow.PermissonWorkFlow.GrantedPermission
 import com.sryang.library.compose.workflow.PermissonWorkFlow.InitialPermissionCheck
@@ -41,14 +45,31 @@ fun WorkFlowImpl(
     permission : String = Manifest.permission.ACCESS_FINE_LOCATION
 ) {
     var timeDiff : Long by remember { mutableStateOf(0L) } // 영구 권한 거부 상태 체크를 위한 시간
+    val lifecycleOwner = LocalLifecycleOwner.current
     val requestPermission = rememberPermissionState(permission, { viewModel.permissionResult(it, System.currentTimeMillis() - timeDiff); })
     val state = viewModel.state
     var stateTxt by remember { mutableStateOf("RequestPermission") }
 
+    // 앱이 포그라운드로 복귀했을 때 실행
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_START) {
+                viewModel.onStart()
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+
     when (state) {
         InitialPermissionCheck  /* 최초 권한 체크 */ -> { viewModel.initialPermissionCheck(requestPermission.status.isGranted) }
         RecognizeToUser         /* UX에 권한을 필요로 하는 정보 인지 시키기 */-> { DescribePermissionDialog(onYes = { viewModel.yesInRecognizeUser() }, onNo = { viewModel.noInRecognizeUser() }) }
-        CheckRational           /* rational 여부 확인 */-> { viewModel.checkRational(requestPermission.status.shouldShowRationale) }
+        CheckRationale           /* rational 여부 확인 */-> { viewModel.checkRational(requestPermission.status.shouldShowRationale) }
         DeniedPermission        /* 권한 거부 */-> { stateTxt = "권한을 거부함." }
         GrantedPermission       /* 사용자가 권한을 허가했다면, 자원 접근 가능 */-> { stateTxt = "권한을 허용함." }
         RequestPermission       /* 런타임 권한 요청하기 */ -> { LaunchedEffect(state == RequestPermission) { requestPermission.launchPermissionRequest(); timeDiff = System.currentTimeMillis() } }
@@ -77,7 +98,7 @@ fun WorkFlowImplEmpty(
     when (state) {
         InitialPermissionCheck  /* 1. 최초 */ -> { viewModel.initialPermissionCheck(requestPermission.status.isGranted) }
         RecognizeToUser         /* 2. UX에 권한을 필요로 하는 정보 인지 시키기 */-> { /* 다이얼로그 버튼 클릭 이벤트에 viewModel.yes()  viewModel.no() 넣기*/ }
-        CheckRational           /* 4. 권한 요청 전 권한 이미 있는지 확인 */-> { viewModel.checkRational(requestPermission.status) }
+        CheckRationale           /* 4. 권한 요청 전 권한 이미 있는지 확인 */-> { viewModel.checkRational(requestPermission.status) }
         DeniedPermission        /* 5. 권한 거부 */-> {  }
         GrantedPermission       /* 6. 사용자가 권한을 허가했다면, 자원 접근 가능 */-> {  }
         RequestPermission       /* 7. 런타임 권한 요청하기 */ -> { LaunchedEffect(state == RequestPermission) { requestPermission.launchPermissionRequest() } }

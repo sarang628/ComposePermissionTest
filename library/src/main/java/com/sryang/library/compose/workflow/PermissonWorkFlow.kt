@@ -14,7 +14,7 @@ package com.sryang.library.compose.workflow
 sealed interface PermissonWorkFlow {
     object InitialPermissionCheck : PermissonWorkFlow
     object RecognizeToUser : PermissonWorkFlow
-    object CheckRational : PermissonWorkFlow
+    object CheckRationale : PermissonWorkFlow
     object ShowRationale : PermissonWorkFlow
     object RequestPermission : PermissonWorkFlow
     object GrantedPermission : PermissonWorkFlow

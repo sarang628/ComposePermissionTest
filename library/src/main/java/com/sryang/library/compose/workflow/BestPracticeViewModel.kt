@@ -1,5 +1,6 @@
 package com.sryang.library.compose.workflow
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,9 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.PermissionStatus
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.shouldShowRationale
-import com.sryang.library.compose.workflow.PermissonWorkFlow.CheckRational
+import com.sryang.library.compose.workflow.PermissonWorkFlow.CheckRationale
 import com.sryang.library.compose.workflow.PermissonWorkFlow.DeniedPermission
 import com.sryang.library.compose.workflow.PermissonWorkFlow.GrantedPermission
 import com.sryang.library.compose.workflow.PermissonWorkFlow.InitialPermissionCheck
@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 class BestPracticeViewModel : ViewModel() {
     var state: PermissonWorkFlow by mutableStateOf(InitialPermissionCheck)
         private set
+    val tag = "__InitialPermissionCheck"
 
     /**
      * 최초 권한 체크
@@ -57,7 +58,7 @@ class BestPracticeViewModel : ViewModel() {
     }
 
     /** 사용자 알림 화면에서 Yes */
-    fun yesInRecognizeUser() { state = CheckRational }
+    fun yesInRecognizeUser() { state = CheckRationale }
 
     /** 사용자 알림 화면에서 No */
     fun noInRecognizeUser() { state = InitialPermissionCheck }
@@ -74,6 +75,7 @@ class BestPracticeViewModel : ViewModel() {
      * 권한을 거부했고 거부하는데 1초가 걸리지 않았다면, 영구 권한 거부로 판단 시스템 이동 창 띄우기
      */
     fun permissionResult(isGranted: Boolean, timeDiff: Long = 2000L) {
+        Log.i(tag, "timeDiff: $timeDiff")
         state = if (isGranted) GrantedPermission else {
             if (timeDiff > 1000) DeniedPermission else SuggestSystemSetting
         }
@@ -112,11 +114,13 @@ class BestPracticeViewModel : ViewModel() {
 
     }
 
-    fun onMoveInSystemDialog() {
-        state = InitialPermissionCheck
-    }
+    fun onMoveInSystemDialog() { state = InitialPermissionCheck }
 
-    fun onNoInSystemDialog() {
+    fun onNoInSystemDialog() { state = InitialPermissionCheck }
+
+    /** 화면을 나갔다 돌아왔다면 권한 체크 다시하기 */
+    fun onStart() {
+        Log.i(tag, "onStart")
         state = InitialPermissionCheck
     }
 
