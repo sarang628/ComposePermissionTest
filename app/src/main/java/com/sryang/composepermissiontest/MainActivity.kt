@@ -13,6 +13,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sryang.composepermissiontest.ui.theme.ComposePermissionTestTheme
 import com.sryang.library.PermissionsUtil
 import com.sryang.library.compose.workflow.BestPracticeViewModel
+import com.sryang.library.sample.BgLocationAccessScreen
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalPermissionsApi::class)
@@ -26,7 +27,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    WorkFlowImplTest()
+                    //WorkFlowImplTest()
+                    BgLocationAccessScreenTest()
                 }
             }
         }
@@ -36,6 +38,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun WorkFlowImplTest(){
     WorkFlowImpl(BestPracticeViewModel())
+}
+
+@Composable
+fun BgLocationAccessScreenTest(){
+    BgLocationAccessScreen()
 }
 
 
